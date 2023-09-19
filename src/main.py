@@ -1,12 +1,14 @@
-from actions_on_structures import *
-from structure import *
-from equilibrium import *
+import actions as ac
+import reactions as re
+import structure as st
 
 
-kraefte = [Actionforce(-15,90, 1.5,0), Actionforce(50, 90, 3,0), Actionforce(-104, 90, 7.4, 0), Actionforce(50, 0,10,0)]
-resultierende_kraft = Equilibrium(kraefte, None).calculate_resultant_force()
-resultierendes_moment = Equilibrium(kraefte, None).calculate_resultant_moment()
-plotter = System(kraefte, resultant_force=resultierende_kraft, resultant_moment=resultierendes_moment)
+einwirkungen = [ac.Force(-15,90, 1.5,0), ac.Force(50, 90, 3,0), ac.Force(-104, 90, 7.4, 0), ac.Force(50, 0,10,0)]
 
+ein
 
-plotter.plot_forces_and_moments()
+# reaktionen = [re.Force(-90, 0, 0), re.Force(-90, 10,0), re.Force(0,10,0)]
+
+# system_1 = st.System(actionforces=einwirkungen, reactionforces=reaktionen)
+
+# system_1.calculate_resultant_force()
