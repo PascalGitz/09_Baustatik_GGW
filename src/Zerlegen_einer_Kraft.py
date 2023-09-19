@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from matplotlib.animation import FuncAnimation, PillowWriter
 
 
 def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
@@ -136,7 +135,7 @@ def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
 
 # Eingabewerte der gegebenen Kraft
 F = 3  # [Krafteinheit]
-phi_F = 67  # in Grad von Richtung x aus positiv zur Richtung y
+phi_F = 134  # in Grad von Richtung x aus positiv zur Richtung y
 
 # Gewünschte Richtungswinkel zur Richtung a und b der zerlegten Kraft
 phi_a = 23  # in Grad von Richtung x aus positiv zur Richtung y
@@ -145,6 +144,3 @@ phi_b = 44  # in Grad von Richtung x aus positiv zur Richtung y
 
 kraftzerlegung_plot(phi_F, F, phi_a, phi_b)
 
-# fig, ax = plt.subplots(figsize=(15, 15))
-# ani = FuncAnimation(fig, kraftzerlegung_plot, frames=range(0, 360, 20),fargs=(F, phi_a, phi_b), repeat=True)
-# ani.save('animation.gif', writer=PillowWriter(fps=10))
