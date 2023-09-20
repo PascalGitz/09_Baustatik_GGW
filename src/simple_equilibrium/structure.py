@@ -129,6 +129,7 @@ class System:
                     params (dict): Parameters for substitution
                 """
                 from sympy import Eq, Symbol
+                
                 symbols = list(params.keys())
                 values = list(params.values())
 

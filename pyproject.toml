@@ -1,0 +1,18 @@
+[project]
+name = "simple_equilibrium"
+version = "0.0.1"
+authors = [
+  { name="Pascal Gitz", email="pascal.gitz@hslu.ch" },
+]
+description = "A simple package that helps understanding the basics of equilibrium. The audience for the package is the students at the Hochschule Technik & Architektur "
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
