@@ -117,6 +117,24 @@ class System:
                 if type(self.reactionmoments[0]) == type(re.Moment(0,0)):                        
                     for reactionmoment in self.reactionmoments:
                             reactionmoment.magnitude = np.float64(reactionmoment.magnitude.subs(sol))
+                            
+                            
+                            
+            ## Die Reaktionskräfte werden als Gleichungen dargestellt:
+            
+            def dict_render(params):
+                """renders a dictionary containing the parameters
+
+                Args:
+                    params (dict): Parameters for substitution
+                """
+                from sympy import Eq, Symbol
+                symbols = list(params.keys())
+                values = list(params.values())
+
+                for i in range(0,len(symbols)):
+                    display(Eq(symbols[i], values[i]))   
+            dict_render(sol)
   
 class Plot:
     
@@ -160,10 +178,10 @@ class Plot:
             }
             
             # Die Position der Vektoren wird durch die länge des Vektors subtrahiert, dies gewährleistet, dass die Pfeilspitze am definierten Punkt zu liegen kommt.
-            ax.annotate(f'F = {abs(round(force.magnitude,1))}', xy=(force.position_x - force.magnitude_x/scaler,force.position_y - force.magnitude_y/scaler), xytext = (7,7), textcoords="offset pixels", color=color)
+            ax.annotate(f'$F$ = {abs(round(force.magnitude,1))}', xy=(force.position_x - force.magnitude_x/scaler,force.position_y - force.magnitude_y/scaler), xytext = (7,7), textcoords="offset pixels", color=color)
             ax.quiver(force.position_x- force.magnitude_x/scaler, force.position_y - force.magnitude_y/scaler, force.magnitude_x, force.magnitude_y, color=color, **quiver_style)
-            ax.quiver(force.position_x- force.magnitude_x/scaler, force.position_y - force.position_y - force.magnitude_y/scaler, force.magnitude_x, 0, color=color, **quiver_style, alpha=0.08)
-            ax.quiver(force.position_x- force.magnitude_x/scaler, force.position_y - force.position_y - force.magnitude_y/scaler, 0, force.magnitude_y, color=color, **quiver_style, alpha=0.08)
+            # ax.quiver(force.position_x- force.magnitude_x/scaler, force.position_y - force.magnitude_y/scaler, force.magnitude_x, 0, color=color, **quiver_style, alpha=0.08)
+            # ax.quiver(force.position_x- force.magnitude_x/scaler, force.position_y - force.magnitude_y/scaler, 0, force.magnitude_y, color=color, **quiver_style, alpha=0.08)
             
             
             
@@ -191,8 +209,8 @@ class Plot:
         ax.set_ylim(-max_magnitude, max_magnitude)
 
         # Optional: Beschriften Sie die Achsen
-        ax.set_xlabel('X-Achse [Krafteinheit]')
-        ax.set_ylabel('Y-Achse [Krafteinheit]')
+        ax.set_xlabel('X-Achse')
+        ax.set_ylabel('Y-Achse')
         ax.set_aspect('equal')
         ax.axis('equal')
         # ax.legend(ncol=2)
