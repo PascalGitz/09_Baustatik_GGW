@@ -98,16 +98,13 @@ class System:
             # Durch die Summe der horizontalen Kräfte können weitere Lagerkräfte bestimmt werden.
             sum_fx = np.sum(forces_x) + np.sum(reactionforces_x)
             equations_equilibrium.append(sum_fx)
-            print(equations_equilibrium, len(equations_equilibrium))
             # Bestimmung der Symbole, nach welchen gelöst wird
             symbols_to_solve = np.append(reactionforces_symbols, reactionmoments_symbols)
-            print(symbols_to_solve, len(symbols_to_solve))
             
 
 
             # Das Lösen der Gleichungen ergibt die magnitudes
             sol = sp.solve(equations_equilibrium, symbols_to_solve)
-            print(sol)
             
             # Die Symbolischen Werte der Reaktionskräfte und der Reaktionsmomente werden mit der Lösung überschrieben       
             if self.reactionforces != None:
