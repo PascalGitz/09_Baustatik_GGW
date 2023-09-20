@@ -6,9 +6,7 @@ The "Structural Equilibrium Analysis Package" is designed for students at the Ho
 
 ## Key Features
 
-- **Equilibrium Analysis:** The core functionality of this package revolves around the analysis of structures using the principles of equilibrium. It allows students to input action forces and calculate the resulting reaction forces within a given structural system.
-
-- **Educational Focus:** This package is specifically tailored to meet the educational needs of students studying structural engineering. It provides a hands-on learning experience, helping students grasp the fundamental concepts of structural analysis.
+- **Equilibrium Analysis:** The core functionality of this package revolves around the analysis of structures using the principles of equilibrium. It allows students to input action forces and calculate the resulting reaction forces within a given system. The package is only capable of two-dimensional analysis.
 
 - **Jupyter Environment:** The package is compatible with Jupyter notebooks, making it a versatile and interactive learning tool. Students can experiment with different scenarios and visualize the outcomes of their analyses.
 
