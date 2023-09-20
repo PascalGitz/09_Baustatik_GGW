@@ -30,10 +30,6 @@ To get started with the "Structural Equilibrium Analysis Package," follow these 
 
 4. Start using the package to analyze different structural systems and deepen your understanding of equilibrium principles.
 
-## Feedback and Support
-
-We welcome feedback from both educators and students to continually improve this package. If you encounter any issues, have suggestions for enhancements, or need assistance, please reach out to our support team.
-
 ## Disclaimer
 
 This package is intended for educational purposes and should be used in conjunction with classroom instruction and academic guidance. It is not a substitute for professional structural engineering software or expertise. Users are responsible for ensuring the accuracy and appropriateness of their analyses when applying the concepts learned through this package to real-world projects.
