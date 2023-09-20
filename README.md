@@ -1,5 +1,4 @@
-# Structural Equilibrium Analysis Package
-
+# simple_equilibrium
 ## Overview
 
 The "Structural Equilibrium Analysis Package" is designed for students at the Hochschule Luzern Technik & Architektur, with a specific focus on structural engineering. This package provides a comprehensive set of tools for analyzing structures and understanding the principles of equilibrium.
