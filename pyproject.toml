@@ -1,18 +1,24 @@
 [project]
-name = "simple_equilibrium"
+dependencies = [
+        'numpy >= 1.25.2',
+        'sympy >= 1.12',
+        'matplotlib >= 3.7.2',
+]
+
+name = "equilibrium"
 version = "0.0.1"
 authors = [
   { name="Pascal Gitz", email="pascal.gitz@hslu.ch" },
 ]
-description = "A simple package that helps understanding the basics of equilibrium. The audience for the package is the students at the Hochschule Technik & Architektur "
+description = "The equilibrium Package is designed for students at the Hochschule Luzern Technik and Architektur, with a specific focus on structural engineering. This package provides a comprehensive set of tools for analyzing structures and understanding the principles of equilibrium."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.10.12"
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "License :: OSI Approved :: GNU General Public License v3.0",
+    "Operating System :: Windows",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/pypa/sampleproject"
-"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+"Homepage" = "https://github.com/PascalGitz/equilibrium"
+"Bug Tracker" = "https://github.com/PascalGitz/equilibrium/issues"
