@@ -11,7 +11,14 @@ def test_calculate_reaction_force():
     
     solution_system = system_1.calculate_reaction_force()
     soultion_expected = '{M_(0, 0): 192.100000000000, R_(10, 0, 90): 69.0000000000000, R_(5, 5, 0): -50.0000000000000}'
-    
     assert str(solution_system) == soultion_expected
 
+    
+    einwirkung_vertikal = []
+    for einwirkung in einwirkungen_kraefte:
+        einwirkung_vertikal.append(einwirkung.magnitude_y)
+        
+    einwirkung_vertikal_sum = sum(einwirkung_vertikal)
+    assert abs(list(solution_system.values())[1]) - abs(einwirkung_vertikal_sum) <= 0.1
 
+    
