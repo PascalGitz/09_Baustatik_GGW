@@ -4,6 +4,33 @@ import matplotlib.patches as patches
 
 
 def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
+    
+    """
+    Visualize force vector decomposition.
+
+    Parameters
+    ----------
+    phi_F : float
+        Angle (in degrees) of the force vector F with respect to the positive x-axis.
+    F : float
+        Magnitude of the force vector F.
+    phi_a : float
+        Angle (in degrees) of the component F_a with respect to the positive x-axis.
+    phi_b : float
+        Angle (in degrees) of the component F_b with respect to the positive x-axis.
+
+    Returns
+    -------
+    None
+
+    Example
+    -------
+    kraftzerlegung_plot(30, 10, 45, -60)
+
+    The above example creates a plot to visualize the decomposition of a force vector with an angle of 30 degrees
+    and magnitude of 10 units into components F_a and F_b with angles of 45 degrees and -60 degrees, respectively.
+    """
+    
     # Berechnete Komponenten F_a und F_b der zerlegten Kraft
     F_a = F / (np.cos(np.radians(phi_a)) * np.sin(np.radians(phi_b)) - np.cos(np.radians(phi_b)) * np.sin(np.radians(phi_a))) * (
                 np.sin(np.radians(phi_b)) * np.cos(np.radians(phi_F)) - np.cos(np.radians(phi_b)) * np.sin(
