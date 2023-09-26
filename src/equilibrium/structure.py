@@ -3,7 +3,7 @@ import sympy as sp
 import matplotlib.pyplot as plt
 from .actions import *
 from .reactions import *
-
+from IPython.display import display
 
 class System:
     """
@@ -42,79 +42,79 @@ class System:
         """
         
         # Zuerst werden alle Einwirkungen in Variablen gespeichert:
-        if self.actionforces == None:
-            forces_x, forces_y, distances_x, distances_y = 0,0,0,0
-        
         if self.actionforces != None:
-            if type(self.actionforces[0]) == type(Actionforce(0,0,0,0)):
-                forces_x = np.array([actionforces.magnitude_x for actionforces in self.actionforces])
-                forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
-                distances_x = np.array([actionforces.position_x for actionforces in self.actionforces])
-                distances_y = np.array([actionforces.position_y for actionforces in self.actionforces])
-            else:
-                raise ValueError('An error occurred: Wrong input in actionforces')
-            
+            for actionforce in self.actionforces:
+                if not isinstance(actionforce, Actionforce):
+                    raise ValueError('An error occurred: Wrong input in actionforces')
+                
+            forces_x = np.array([actionforces.magnitude_x for actionforces in self.actionforces])
+            forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
+            distances_x_actionforces = np.array([actionforces.position_x for actionforces in self.actionforces])
+            distances_y_actionforces = np.array([actionforces.position_y for actionforces in self.actionforces])
+        
+        else:
+            forces_x, forces_y, distances_x_actionforces, distances_y_actionforces = 0,0,0,0
+                   
             
         # Danach für alle einwirkenden Momente
-        if self.actionmoments == None:
+        if self.actionmoments != None:
+            for actionmoment in self.actionmoments:
+                if not isinstance(actionmoment, Actionmoment):
+                    raise ValueError('An error occurred: Wrong input in actionmoments')
+                
+            moments = np.array([actionmoments.magnitude for actionmoments in self.actionmoments])
+        else:
             moments = 0
             
-        if self.actionmoments != None:
-            if type(self.actionmoments[0]) == type(Actionmoment(0,0,0)):
-                moments = np.array([actionmoments.magnitude for actionmoments in self.actionmoments])
-            else:
-                raise ValueError('An error occurred: Wrong input in actionmoments')
-            
             
         
         
-        # Die Positionen der Reaktionskräfte und Momente dienen direkt als Drehpunkt für das Gleichgewicht der Momente. Dazu wird eine leere Liste erstellt, welche mit den Koordinaten gefüttert wird, sofern diese vorhanden sind.
-        
-        node_pos_x = np.array([-10e9, -10e8, -10e7])
-        node_pos_y = np.array([10e9, 10e8, 10e7])
-        
+
         
         # Alle Reaktionskräfte in Variablen:
-        if self.reactionforces == None:
-            reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
         
         if self.reactionforces != None:
-            if type(self.reactionforces[0]) == type(Reactionforce(0,0,0)):
-                reactionforces_x = np.array([reactionforces.magnitude_x for reactionforces in self.reactionforces])
-                reactionforces_y = np.array([reactionforces.magnitude_y for reactionforces in self.reactionforces])
-                distances_x_reaction = np.array([reactionforces.position_x for reactionforces in self.reactionforces])
-                distances_y_reaction = np.array([reactionforces.position_y for reactionforces in self.reactionforces])
-                reactionforces_symbols = [reactionforces.magnitude for reactionforces in self.reactionforces]
+            for reactionforce in self.reactionforces:
+                if not isinstance(reactionforce, Reactionforce):
+                    raise ValueError('An error occurred: Wrong input in reactionforces')
                 
-                # Die Drehpunkte der Reaktionskräfte hinzugefügt
-                # node_pos_x = np.append(node_pos_x,distances_x_reaction)
-                # node_pos_y = np.append(node_pos_y,distances_y_reaction)
-            else: 
-                raise ValueError('An error occurred: Wrong input in reactionforces')
+            reactionforces_x = np.array([reactionforces.magnitude_x for reactionforces in self.reactionforces])
+            reactionforces_y = np.array([reactionforces.magnitude_y for reactionforces in self.reactionforces])
+            distances_x_reaction = np.array([reactionforces.position_x for reactionforces in self.reactionforces])
+            distances_y_reaction = np.array([reactionforces.position_y for reactionforces in self.reactionforces])
+            reactionforces_symbols = [reactionforces.magnitude for reactionforces in self.reactionforces]    
+        
+        else: 
+            reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
+
             
             
         # Alle Reaktionsmomente in Variablen:
-        if self.reactionmoments == None:
-            reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
-        
         if self.reactionmoments != None:
-            if type(self.reactionmoments[0]) == type(Reactionmoment(0,0)):
-                reactionmoments_symbols = np.array([reactionmoments.magnitude for reactionmoments in self.reactionmoments])
-                distances_x_reactionmoment = np.array([reactionmoments.position_x for reactionmoments in self.reactionmoments])
-                distances_y_reactionmoment = np.array([reactionmoments.position_y for reactionmoments in self.reactionmoments])
+            for reactionmoment in self.reactionmoments:
+                if not isinstance(reactionmoment, Reactionmoment):
+                    raise ValueError('An error occurred: Wrong input in reactionmoments')
                 
-                # Die Koordinaten der Reaktionsmomente werden den Drehpunkten hinzugefügt
-                # node_pos_x = np.append(node_pos_x,distances_x_reactionmoment)
-                # node_pos_y = np.append(node_pos_y,distances_y_reactionmoment)
-            
-            else:
-                raise ValueError('An error occurred: Wrong input in reactionmoments')
-            
+            reactionmoments_symbols = np.array([reactionmoments.magnitude for reactionmoments in self.reactionmoments])
+            distances_x_reactionmoment = np.array([reactionmoments.position_x for reactionmoments in self.reactionmoments])
+            distances_y_reactionmoment = np.array([reactionmoments.position_y for reactionmoments in self.reactionmoments])
+        
+        else:
+            reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
+
+
+        # Drehpunkte dürfen lediglich nicht mit den Koordinaten der Reaktionskräfte und Momente übereinstimmen, damit diese nicht aus den Gleichungen fallen
+        # Erstellen Sie ein Array mit möglichen Einträgen. Falls eine Reaktionskraft an einer der Koordinaten von node_pos erstellt wird, so 
+          
+        node_pos_x = np.array([-10e9, -10e8, -10e7])
+        node_pos_y = np.array([10e9, 10e8, 10e7])
+        
+       
         # Gleichgewicht            
         equations_equilibrium = []
-        # Es wird die Summe aller Momente um jeden Auflagerpunkt gebildet
+        # Es wird die Summe aller Momente um weit entfernte Punkte ermittelt
         for i in range(0,len(node_pos_x)):
-            sum_moment = np.sum(forces_x * (distances_y-node_pos_y[i]) + forces_y * (distances_x-node_pos_x[i])) + np.sum(reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols)
+            sum_moment = np.sum(forces_x * (distances_y_actionforces-node_pos_y[i]) + forces_y * (distances_x_actionforces-node_pos_x[i])) + np.sum(reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols)
             equations_equilibrium.append(sum_moment)
         
         # Durch die Summe der horizontalen Kräfte können weitere Lagerkräfte bestimmt werden.
