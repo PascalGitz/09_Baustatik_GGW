@@ -44,7 +44,6 @@ class System:
         # Zuerst werden alle Einwirkungen in Variablen gespeichert:
         if self.actionforces == None:
             forces_x, forces_y, distances_x, distances_y = 0,0,0,0
-            print('Das System hat keine einwirkende Kräfte')
         
         if self.actionforces != None:
             if type(self.actionforces[0]) == type(Actionforce(0,0,0,0)):
@@ -53,19 +52,18 @@ class System:
                 distances_x = np.array([actionforces.position_x for actionforces in self.actionforces])
                 distances_y = np.array([actionforces.position_y for actionforces in self.actionforces])
             else:
-                print('Fehlerhafte Eingabe in den einwirkenden Kräften')
+                raise ValueError('An error occurred: Wrong input in actionforces')
             
             
         # Danach für alle einwirkenden Momente
         if self.actionmoments == None:
             moments = 0
-            print('Das System hat keine einwirkenden Momente')
             
         if self.actionmoments != None:
             if type(self.actionmoments[0]) == type(Actionmoment(0,0,0)):
                 moments = np.array([actionmoments.magnitude for actionmoments in self.actionmoments])
             else:
-                print('Fehlerhafte Eingabe in den einwirkenden Momenten')
+                raise ValueError('An error occurred: Wrong input in actionmoments')
             
             
         
@@ -79,7 +77,6 @@ class System:
         # Alle Reaktionskräfte in Variablen:
         if self.reactionforces == None:
             reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
-            print('Das System hat keine Auflagerkräfte')
         
         if self.reactionforces != None:
             if type(self.reactionforces[0]) == type(Reactionforce(0,0,0)):
@@ -93,12 +90,11 @@ class System:
                 # node_pos_x = np.append(node_pos_x,distances_x_reaction)
                 # node_pos_y = np.append(node_pos_y,distances_y_reaction)
             else: 
-                print('Fehlerhafte Eingabe in den Reaktionskräften')
+                raise ValueError('An error occurred: Wrong input in reactionforces')
             
             
         # Alle Reaktionsmomente in Variablen:
         if self.reactionmoments == None:
-            print('Das System hat keine Auflagermomente')
             reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
         
         if self.reactionmoments != None:
@@ -112,7 +108,7 @@ class System:
                 # node_pos_y = np.append(node_pos_y,distances_y_reactionmoment)
             
             else:
-                print('Fehlerhafte Eingabe in den Reaktionsmomenten')
+                raise ValueError('An error occurred: Wrong input in reactionmoments')
             
         # Gleichgewicht            
         equations_equilibrium = []
@@ -131,12 +127,10 @@ class System:
 
         # Das Lösen der Gleichungen ergibt die magnitudes
         sol = sp.solve(equations_equilibrium, symbols_to_solve)
-        print(sol)
         if len(sol) == 0:
             raise ValueError('An error occurred: The system has no solution, check static determinacy')
         
         for value in sol.values():
-            print(type(value))
             if type(value) != sp.core.numbers.Float:
                 raise ValueError('An error occurred: The system has too many unknowns, check static determinacy')
        
