@@ -1,11 +1,31 @@
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
-import actions as ac
-import reactions as re
+from .actions import *
+from .reactions import *
 
 
 class System:
+    """
+    Represents a system of forces and moments to calculate reaction forces and moments at specified points.
+
+    Parameters
+    ----------
+    actionforces : list of Actionforce, optional
+        A list of Actionforce objects representing applied forces. Default is `None`.
+    actionmoments : list of Actionmoment, optional
+        A list of Actionmoment objects representing applied moments. Default is `None`.
+    reactionforces : list of Reactionforce, optional
+        A list of Reactionforce objects representing reaction forces. Default is `None`.
+    reactionmoments : list of Reactionmoment, optional
+        A list of Reactionmoment objects representing reaction moments. Default is `None`.
+
+    Methods
+    -------
+    calculate_reaction_force():
+        Calculates the reaction forces and moments at specified points for the given system.
+    """
+    
     def __init__(self, actionforces=None, actionmoments=None, reactionforces=None, reactionmoments=None):
         self.actionforces = actionforces
         self.actionmoments = actionmoments
@@ -13,129 +33,135 @@ class System:
         self.reactionmoments = reactionmoments
         
     def calculate_reaction_force(self):
+        """
+        Calculates the reaction forces and moments at specified points for the given system.
+        
+        Returns
+        -------
+        None
+        """
+        
+        # Zuerst werden alle Einwirkungen in Variablen gespeichert:
+        if self.actionforces == None:
+            forces_x, forces_y, distances_x, distances_y = 0,0,0,0
+            print('Das System hat keine einwirkende Kräfte')
+        
+        if self.actionforces != None:
+            if type(self.actionforces[0]) == type(Actionforce(0,0,0,0)):
+                forces_x = np.array([actionforces.magnitude_x for actionforces in self.actionforces])
+                forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
+                distances_x = np.array([actionforces.position_x for actionforces in self.actionforces])
+                distances_y = np.array([actionforces.position_y for actionforces in self.actionforces])
+            else:
+                print('Fehlerhafte Eingabe in den einwirkenden Kräften')
+            
+            
+        # Danach für alle einwirkenden Momente
+        if self.actionmoments == None:
+            moments = 0
+            print('Das System hat keine einwirkenden Momente')
+            
+        if self.actionmoments != None:
+            if type(self.actionmoments[0]) == type(Actionmoment(0,0,0)):
+                moments = np.array([actionmoments.magnitude for actionmoments in self.actionmoments])
+            else:
+                print('Fehlerhafte Eingabe in den einwirkenden Momenten')
+            
+            
         
         
-            # Zuerst werden alle Einwirkungen in Variablen gespeichert:
-            if self.actionforces == None:
-                forces_x, forces_y, distances_x, distances_y = 0,0,0,0
-                print('Das System hat keine einwirkende Kräfte')
-            
-            if self.actionforces != None:
-                if type(self.actionforces[0]) == type(ac.Force(0,0,0,0)):
-                    forces_x = np.array([actionforces.magnitude_x for actionforces in self.actionforces])
-                    forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
-                    distances_x = np.array([actionforces.position_x for actionforces in self.actionforces])
-                    distances_y = np.array([actionforces.position_y for actionforces in self.actionforces])
-                else:
-                    print('Fehlerhafte Eingabe in den einwirkenden Kräften')
+        # Die Positionen der Reaktionskräfte und Momente dienen direkt als Drehpunkt für das Gleichgewicht der Momente. Dazu wird eine leere Liste erstellt, welche mit den Koordinaten gefüttert wird, sofern diese vorhanden sind.
+        
+        node_pos_x = np.array([-10e9, -10e8, -10e7])
+        node_pos_y = np.array([10e9, 10e8, 10e7])
+        
+        
+        # Alle Reaktionskräfte in Variablen:
+        if self.reactionforces == None:
+            reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
+            print('Das System hat keine Auflagerkräfte')
+        
+        if self.reactionforces != None:
+            if type(self.reactionforces[0]) == type(Reactionforce(0,0,0)):
+                reactionforces_x = np.array([reactionforces.magnitude_x for reactionforces in self.reactionforces])
+                reactionforces_y = np.array([reactionforces.magnitude_y for reactionforces in self.reactionforces])
+                distances_x_reaction = np.array([reactionforces.position_x for reactionforces in self.reactionforces])
+                distances_y_reaction = np.array([reactionforces.position_y for reactionforces in self.reactionforces])
+                reactionforces_symbols = [reactionforces.magnitude for reactionforces in self.reactionforces]
                 
+                # Die Drehpunkte der Reaktionskräfte hinzugefügt
+                # node_pos_x = np.append(node_pos_x,distances_x_reaction)
+                # node_pos_y = np.append(node_pos_y,distances_y_reaction)
+            else: 
+                print('Fehlerhafte Eingabe in den Reaktionskräften')
+            
+            
+        # Alle Reaktionsmomente in Variablen:
+        if self.reactionmoments == None:
+            print('Das System hat keine Auflagermomente')
+            reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
+        
+        if self.reactionmoments != None:
+            if type(self.reactionmoments[0]) == type(Reactionmoment(0,0)):
+                reactionmoments_symbols = np.array([reactionmoments.magnitude for reactionmoments in self.reactionmoments])
+                distances_x_reactionmoment = np.array([reactionmoments.position_x for reactionmoments in self.reactionmoments])
+                distances_y_reactionmoment = np.array([reactionmoments.position_y for reactionmoments in self.reactionmoments])
                 
-            # Danach für alle einwirkenden Momente
-            if self.actionmoments == None:
-                moments = 0
-                print('Das System hat keine einwirkenden Momente')
-                
-            if self.actionmoments != None:
-                if type(self.actionmoments[0]) == type(ac.Moment(0,0,0)):
-                    moments = np.array([actionmoments.magnitude for actionmoments in self.actionmoments])
-                else:
-                    print('Fehlerhafte Eingabe in den einwirkenden Momenten')
-                
-                
+                # Die Koordinaten der Reaktionsmomente werden den Drehpunkten hinzugefügt
+                # node_pos_x = np.append(node_pos_x,distances_x_reactionmoment)
+                # node_pos_y = np.append(node_pos_y,distances_y_reactionmoment)
             
+            else:
+                print('Fehlerhafte Eingabe in den Reaktionsmomenten')
             
-            # Die Positionen der Reaktionskräfte und Momente dienen direkt als Drehpunkt für das Gleichgewicht der Momente. Dazu wird eine leere Liste erstellt, welche mit den Koordinaten gefüttert wird, sofern diese vorhanden sind.
-            
-            node_pos_x = np.array([-10e9, -10e8, -10e7])
-            node_pos_y = np.array([10e9, 10e8, 10e7])
-            
-            
-            # Alle Reaktionskräfte in Variablen:
-            if self.reactionforces == None:
-                reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
-                print('Das System hat keine Auflagerkräfte')
-            
-            if self.reactionforces != None:
-                if type(self.reactionforces[0]) == type(re.Force(0,0,0)):
-                    reactionforces_x = np.array([reactionforces.magnitude_x for reactionforces in self.reactionforces])
-                    reactionforces_y = np.array([reactionforces.magnitude_y for reactionforces in self.reactionforces])
-                    distances_x_reaction = np.array([reactionforces.position_x for reactionforces in self.reactionforces])
-                    distances_y_reaction = np.array([reactionforces.position_y for reactionforces in self.reactionforces])
-                    reactionforces_symbols = [reactionforces.magnitude for reactionforces in self.reactionforces]
-                    
-                    # Die Drehpunkte der Reaktionskräfte hinzugefügt
-                    # node_pos_x = np.append(node_pos_x,distances_x_reaction)
-                    # node_pos_y = np.append(node_pos_y,distances_y_reaction)
-                else: 
-                    print('Fehlerhafte Eingabe in den Reaktionskräften')
-                
-                
-            # Alle Reaktionsmomente in Variablen:
-            if self.reactionmoments == None:
-                print('Das System hat keine Auflagermomente')
-                reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
-            
-            if self.reactionmoments != None:
-                if type(self.reactionmoments[0]) == type(re.Moment(0,0)):
-                    reactionmoments_symbols = np.array([reactionmoments.magnitude for reactionmoments in self.reactionmoments])
-                    distances_x_reactionmoment = np.array([reactionmoments.position_x for reactionmoments in self.reactionmoments])
-                    distances_y_reactionmoment = np.array([reactionmoments.position_y for reactionmoments in self.reactionmoments])
-                    
-                    # Die Koordinaten der Reaktionsmomente werden den Drehpunkten hinzugefügt
-                    # node_pos_x = np.append(node_pos_x,distances_x_reactionmoment)
-                    # node_pos_y = np.append(node_pos_y,distances_y_reactionmoment)
-                
-                else:
-                    print('Fehlerhafte Eingabe in den Reaktionsmomenten')
-                
-            # Gleichgewicht            
-            equations_equilibrium = []
-            # Es wird die Summe aller Momente um jeden Auflagerpunkt gebildet
-            for i in range(0,len(node_pos_x)):
-                sum_moment = np.sum(forces_x * (distances_y-node_pos_y[i]) + forces_y * (distances_x-node_pos_x[i])) + np.sum(reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols)
-                equations_equilibrium.append(sum_moment)
-            
-            # Durch die Summe der horizontalen Kräfte können weitere Lagerkräfte bestimmt werden.
-            sum_fx = np.sum(forces_x) + np.sum(reactionforces_x)
-            equations_equilibrium.append(sum_fx)
-            # Bestimmung der Symbole, nach welchen gelöst wird
-            symbols_to_solve = np.append(reactionforces_symbols, reactionmoments_symbols)
-            
+        # Gleichgewicht            
+        equations_equilibrium = []
+        # Es wird die Summe aller Momente um jeden Auflagerpunkt gebildet
+        for i in range(0,len(node_pos_x)):
+            sum_moment = np.sum(forces_x * (distances_y-node_pos_y[i]) + forces_y * (distances_x-node_pos_x[i])) + np.sum(reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols)
+            equations_equilibrium.append(sum_moment)
+        
+        # Durch die Summe der horizontalen Kräfte können weitere Lagerkräfte bestimmt werden.
+        sum_fx = np.sum(forces_x) + np.sum(reactionforces_x)
+        equations_equilibrium.append(sum_fx)
+        # Bestimmung der Symbole, nach welchen gelöst wird
+        symbols_to_solve = np.append(reactionforces_symbols, reactionmoments_symbols)
+        
 
 
-            # Das Lösen der Gleichungen ergibt die magnitudes
-            sol = sp.solve(equations_equilibrium, symbols_to_solve)
-            
-            # Die Symbolischen Werte der Reaktionskräfte und der Reaktionsmomente werden mit der Lösung überschrieben       
-            if self.reactionforces != None:
-                if type(self.reactionforces[0]) == type(re.Force(0,0,0)):
-                    for reactionforces in self.reactionforces:
-                        reactionforces.magnitude = np.float64(reactionforces.magnitude.subs(sol))
-                        reactionforces.magnitude_x = reactionforces.magnitude * np.cos(np.radians(reactionforces.rotation))
-                        reactionforces.magnitude_y = reactionforces.magnitude * np.sin(np.radians(reactionforces.rotation))
-            if self.reactionmoments != None:
-                if type(self.reactionmoments[0]) == type(re.Moment(0,0)):                        
-                    for reactionmoment in self.reactionmoments:
-                            reactionmoment.magnitude = np.float64(reactionmoment.magnitude.subs(sol))
-                            
-                            
-                            
-            ## Die Reaktionskräfte werden als Gleichungen dargestellt:
-            
-            def dict_render(params):
-                """renders a dictionary containing the parameters
+        # Das Lösen der Gleichungen ergibt die magnitudes
+        sol = sp.solve(equations_equilibrium, symbols_to_solve)
+        
+        # Die Symbolischen Werte der Reaktionskräfte und der Reaktionsmomente werden mit der Lösung überschrieben       
+        if self.reactionforces != None:
+            if type(self.reactionforces[0]) == type(Reactionforce(0,0,0)):
+                for reactionforces in self.reactionforces:
+                    reactionforces.magnitude = np.float64(reactionforces.magnitude.subs(sol))
+                    reactionforces.magnitude_x = reactionforces.magnitude * np.cos(np.radians(reactionforces.rotation))
+                    reactionforces.magnitude_y = reactionforces.magnitude * np.sin(np.radians(reactionforces.rotation))
+        if self.reactionmoments != None:
+            if type(self.reactionmoments[0]) == type(Reactionmoment(0,0)):                        
+                for reactionmoment in self.reactionmoments:
+                        reactionmoment.magnitude = np.float64(reactionmoment.magnitude.subs(sol))
+                        
+                        
+                        
+        ## Die Reaktionskräfte werden als Gleichungen dargestellt:
+        
+        def dict_render(params):
+            """renders a dictionary containing the parameters
 
-                Args:
-                    params (dict): Parameters for substitution
-                """
-                from sympy import Eq, Symbol
-                
-                symbols = list(params.keys())
-                values = list(params.values())
+            Args:
+                params (dict): Parameters for substitution
+            """
+            from sympy import Eq, Symbol
+            
+            symbols = list(params.keys())
+            values = list(params.values())
 
-                for i in range(0,len(symbols)):
-                    display(Eq(symbols[i], values[i]))   
-            dict_render(sol)
+            for i in range(0,len(symbols)):
+                display(Eq(symbols[i], values[i]))   
+        return sol
   
 class Plot:
     
