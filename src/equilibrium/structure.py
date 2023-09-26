@@ -131,6 +131,15 @@ class System:
 
         # Das Lösen der Gleichungen ergibt die magnitudes
         sol = sp.solve(equations_equilibrium, symbols_to_solve)
+        print(sol)
+        if len(sol) == 0:
+            raise ValueError('An error occurred: The system has no solution, check static determinacy')
+        
+        for value in sol.values():
+            print(type(value))
+            if type(value) != sp.core.numbers.Float:
+                raise ValueError('An error occurred: The system has too many unknowns, check static determinacy')
+       
         
         # Die Symbolischen Werte der Reaktionskräfte und der Reaktionsmomente werden mit der Lösung überschrieben       
         if self.reactionforces != None:
@@ -160,7 +169,9 @@ class System:
             values = list(params.values())
 
             for i in range(0,len(symbols)):
-                display(Eq(symbols[i], values[i]))   
+                display(Eq(symbols[i], values[i]))
+                
+        dict_render(sol)
         return sol
   
 class Plot:
