@@ -51,15 +51,7 @@ class System:
             forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
             distances_x_actionforces = np.array([actionforces.position_x for actionforces in self.actionforces])
             distances_y_actionforces = np.array([actionforces.position_y for actionforces in self.actionforces])
-            # print(f'forces_x = {forces_x}',
-            #       f'forces_y = {forces_y}',
-            #       f'distances_x_actionforces = {distances_x_actionforces}',
-            #       f'distances_y_actionforces = {distances_y_actionforces}',
-            #       f'forces_x * distances_y = {forces_x * distances_y_actionforces}'
-            #       f'forces_y * distances_y = {forces_y * distances_x_actionforces}'
-            #       f'sum_moments = {np.sum(forces_x * distances_y_actionforces + forces_y * distances_x_actionforces)}'
-                  
-            #       )
+
         else:
             forces_x, forces_y, distances_x_actionforces, distances_y_actionforces = 0,0,0,0
                    
@@ -90,10 +82,9 @@ class System:
             reactionforces_y = np.array([reactionforces.magnitude_y for reactionforces in self.reactionforces])
             distances_x_reaction = np.array([reactionforces.position_x for reactionforces in self.reactionforces])
             distances_y_reaction = np.array([reactionforces.position_y for reactionforces in self.reactionforces])
-            reactionforces_symbols = [reactionforces.magnitude for reactionforces in self.reactionforces]    
         
         else: 
-            reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
+            reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
 
             
         # Alle Reaktionsmomente in Variablen:
@@ -103,18 +94,15 @@ class System:
                     raise ValueError('An error occurred: Wrong input in reactionmoments')
                 
             reactionmoments_symbols = np.array([reactionmoments.magnitude for reactionmoments in self.reactionmoments])
-            distances_x_reactionmoment = np.array([reactionmoments.position_x for reactionmoments in self.reactionmoments])
-            distances_y_reactionmoment = np.array([reactionmoments.position_y for reactionmoments in self.reactionmoments])
+
         
         else:
-            reactionmoments_symbols, distances_x_reactionmoment, distances_y_reactionmoment = 0,0,0
+            reactionmoments_symbols = 0
 
 
         # Drehpunkte dürfen lediglich nicht mit den Koordinaten der Reaktionskräfte und Momente übereinstimmen, damit diese nicht aus den Gleichungen fallen
         # Erstellen Sie ein Array mit möglichen Einträgen. Falls eine Reaktionskraft an einer der Koordinaten von node_pos erstellt wird, so 
           
-        node_pos_x = np.append(distances_x_reaction, distances_x_reactionmoment)
-        node_pos_y = np.append(distances_y_reaction, distances_y_reactionmoment)
         node_pos_x = np.array([1e10, 1e9, 1e8])
         node_pos_y = np.array([-1e8, -1e10, -1e10])
        
@@ -124,18 +112,7 @@ class System:
         for i in range(0,len(node_pos_x)):
             sum_moment = sp.Eq(0,np.sum(-forces_x * (distances_y_actionforces-node_pos_y[i]) + forces_y * (distances_x_actionforces-node_pos_x[i])) + np.sum(-reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols))
             equations_equilibrium.append(sum_moment)
-
-        # Die Summe aller Kräfte in X-Richtung:
-        # sum_Fx = sp.Eq(0,np.sum(forces_x) + np.sum(reactionforces_x))
-        # equations_equilibrium.append(sum_Fx)
-        
-        # # Die Summe aller Kräfte in Z-Richtung
-        # sum_Fz = sp.Eq(0,np.sum(forces_y) + np.sum(reactionforces_y))
-        # equations_equilibrium.append(sum_Fz)
-        
-        
-        # print(equations_equilibrium)
-        
+    
         
         # Das Lösen der Gleichungen ergibt die magnitudes
         sol = sp.solve(equations_equilibrium)
