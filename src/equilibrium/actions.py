@@ -1,4 +1,5 @@
 import numpy as np
+import sympy as sp
 class Actionforce:
     """
     Represents a force vector with magnitude, direction, and position.
@@ -36,8 +37,8 @@ class Actionforce:
     def __init__(self, magnitude, rotation_to_x, position_x, position_y):
         self.magnitude = magnitude  # Kraftbetrag 
         self.rotation = rotation_to_x # Winkel in Bezug auf die X-Achse
-        self.magnitude_x = magnitude * np.round(np.cos(np.radians(rotation_to_x)),1)
-        self.magnitude_y = magnitude * np.round(np.sin(np.radians(rotation_to_x)),1)
+        self.magnitude_x = magnitude * np.cos(np.radians(rotation_to_x))
+        self.magnitude_y = magnitude * np.sin(np.radians(rotation_to_x))
         self.position_x = position_x   # Position des Angriffspunkts in X-Richtung
         self.position_y = position_y    # Position des Angriffspunkts in Y-Richtung
 
