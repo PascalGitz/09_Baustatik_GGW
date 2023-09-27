@@ -51,7 +51,15 @@ class System:
             forces_y = np.array([actionforces.magnitude_y for actionforces in self.actionforces])
             distances_x_actionforces = np.array([actionforces.position_x for actionforces in self.actionforces])
             distances_y_actionforces = np.array([actionforces.position_y for actionforces in self.actionforces])
-        
+            # print(f'forces_x = {forces_x}',
+            #       f'forces_y = {forces_y}',
+            #       f'distances_x_actionforces = {distances_x_actionforces}',
+            #       f'distances_y_actionforces = {distances_y_actionforces}',
+            #       f'forces_x * distances_y = {forces_x * distances_y_actionforces}'
+            #       f'forces_y * distances_y = {forces_y * distances_x_actionforces}'
+            #       f'sum_moments = {np.sum(forces_x * distances_y_actionforces + forces_y * distances_x_actionforces)}'
+                  
+            #       )
         else:
             forces_x, forces_y, distances_x_actionforces, distances_y_actionforces = 0,0,0,0
                    
@@ -88,7 +96,6 @@ class System:
             reactionforces_symbols,reactionforces_x, reactionforces_y, distances_x_reaction, distances_y_reaction = 0,0,0,0,0
 
             
-            
         # Alle Reaktionsmomente in Variablen:
         if self.reactionmoments != None:
             for reactionmoment in self.reactionmoments:
@@ -106,34 +113,38 @@ class System:
         # Drehpunkte dürfen lediglich nicht mit den Koordinaten der Reaktionskräfte und Momente übereinstimmen, damit diese nicht aus den Gleichungen fallen
         # Erstellen Sie ein Array mit möglichen Einträgen. Falls eine Reaktionskraft an einer der Koordinaten von node_pos erstellt wird, so 
           
-        node_pos_x = np.array([-10e9, -10e8, -10e7])
-        node_pos_y = np.array([10e9, 10e8, 10e7])
-        
+        node_pos_x = np.append(distances_x_reaction, distances_x_reactionmoment)
+        node_pos_y = np.append(distances_y_reaction, distances_y_reactionmoment)
+        node_pos_x = np.array([1e10, 1e9, 1e8])
+        node_pos_y = np.array([-1e8, -1e10, -1e10])
        
         # Gleichgewicht            
         equations_equilibrium = []
         # Es wird die Summe aller Momente um weit entfernte Punkte ermittelt
         for i in range(0,len(node_pos_x)):
-            sum_moment = np.sum(forces_x * (distances_y_actionforces-node_pos_y[i]) + forces_y * (distances_x_actionforces-node_pos_x[i])) + np.sum(reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols)
+            sum_moment = sp.Eq(0,np.sum(-forces_x * (distances_y_actionforces-node_pos_y[i]) + forces_y * (distances_x_actionforces-node_pos_x[i])) + np.sum(-reactionforces_x * (distances_y_reaction-node_pos_y[i]) + reactionforces_y * (distances_x_reaction-node_pos_x[i])) + np.sum(moments) + np.sum(reactionmoments_symbols))
             equations_equilibrium.append(sum_moment)
-        
-        # Durch die Summe der horizontalen Kräfte können weitere Lagerkräfte bestimmt werden.
-        sum_fx = np.sum(forces_x) + np.sum(reactionforces_x)
-        equations_equilibrium.append(sum_fx)
-        # Bestimmung der Symbole, nach welchen gelöst wird
-        symbols_to_solve = np.append(reactionforces_symbols, reactionmoments_symbols)
-        
 
-
+        # Die Summe aller Kräfte in X-Richtung:
+        # sum_Fx = sp.Eq(0,np.sum(forces_x) + np.sum(reactionforces_x))
+        # equations_equilibrium.append(sum_Fx)
+        
+        # # Die Summe aller Kräfte in Z-Richtung
+        # sum_Fz = sp.Eq(0,np.sum(forces_y) + np.sum(reactionforces_y))
+        # equations_equilibrium.append(sum_Fz)
+        
+        
+        # print(equations_equilibrium)
+        
+        
         # Das Lösen der Gleichungen ergibt die magnitudes
-        sol = sp.solve(equations_equilibrium, symbols_to_solve)
+        sol = sp.solve(equations_equilibrium)
         if len(sol) == 0:
             raise ValueError('An error occurred: The system has no solution, check static determinacy')
         
         for value in sol.values():
             if type(value) != sp.core.numbers.Float:
                 raise ValueError('An error occurred: The system has too many unknowns, check static determinacy')
-       
         
         # Die Symbolischen Werte der Reaktionskräfte und der Reaktionsmomente werden mit der Lösung überschrieben       
         if self.reactionforces != None:
@@ -163,7 +174,7 @@ class System:
             values = list(params.values())
 
             for i in range(0,len(symbols)):
-                display(Eq(symbols[i], values[i]))
+                display(Eq(symbols[i], values[i].evalf(4)))
                 
         dict_render(sol)
         return sol
