@@ -11,7 +11,7 @@ Classifier: Operating System :: Windows
 Requires-Python: >=3.10.12
 Description-Content-Type: text/markdown
 License-File: LICENSE
-Requires-Dist: numpy>=1.25.2
+Requires-Dist: numpy>=1.26.0
 Requires-Dist: sympy>=1.12
 Requires-Dist: matplotlib>=3.7.2
 

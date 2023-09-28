@@ -1,7 +1,6 @@
 from .actions import *
 from .reactions import *
 from .structure import *
-from .utils import *
 from .Zerlegen_einer_Kraft import *
 
 
