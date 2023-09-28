@@ -2,9 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
+# Ploterstellung
+
 
 def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
-    
+
     """
     Visualize force vector decomposition.
 
@@ -30,7 +32,7 @@ def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
     The above example creates a plot to visualize the decomposition of a force vector with an angle of 30 degrees
     and magnitude of 10 units into components F_a and F_b with angles of 45 degrees and -60 degrees, respectively.
     """
-    
+
     # Berechnete Komponenten F_a und F_b der zerlegten Kraft
     F_a = F / (np.cos(np.radians(phi_a)) * np.sin(np.radians(phi_b)) - np.cos(np.radians(phi_b)) * np.sin(np.radians(phi_a))) * (
                 np.sin(np.radians(phi_b)) * np.cos(np.radians(phi_F)) - np.cos(np.radians(phi_b)) * np.sin(
@@ -43,9 +45,7 @@ def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
 
 
 
-    # Ploterstellung
     fig, ax = plt.subplots(figsize=(15, 15))
-
     arrow_style = {
         'headlength':5,
         'headaxislength':5,
@@ -156,18 +156,24 @@ def kraftzerlegung_plot(phi_F, F, phi_a, phi_b):
     ax.axis('equal')
     ax.legend(ncol=2)
     ax.grid()
-
+    ax.set_facecolor('none')
+    
     plt.show()
     
+        
+    
 
-# Eingabewerte der gegebenen Kraft
-F = 3  # [Krafteinheit]
-phi_F = 134  # in Grad von Richtung x aus positiv zur Richtung y
-
-# Gewünschte Richtungswinkel zur Richtung a und b der zerlegten Kraft
-phi_a = 23  # in Grad von Richtung x aus positiv zur Richtung y
-phi_b = 44  # in Grad von Richtung x aus positiv zur Richtung y
+# # Eingabewerte der gegebenen Kraft
 
 
-kraftzerlegung_plot(phi_F, F, phi_a, phi_b)
+# F = 3  # [Krafteinheit]
+# phi_F = 134  # in Grad von Richtung x aus positiv zur Richtung y
 
+# # Gewünschte Richtungswinkel zur Richtung a und b der zerlegten Kraft
+# phi_a = 23  # in Grad von Richtung x aus positiv zur Richtung y
+# phi_b = 44  # in Grad von Richtung x aus positiv zur Richtung y
+
+
+# kraftzerlegung_plot(phi_F, F, phi_a, phi_b)
+
+# plt.show()

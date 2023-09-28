@@ -45,8 +45,8 @@ class Reactionforce:
     
     def __init__(self, rotation_to_x, position_x, position_y):
         self.magnitude = sp.Symbol(f'R_{position_x, position_y, rotation_to_x}', real=True, rational=True) #Die Stärke wird als Symbol eingeführt um nach diesen zu solven
-        self.magnitude_x = sp.nsimplify(self.magnitude *sp.cos(sp.rad(rotation_to_x)),tolerance= 1e-7).evalf(50) #the rounding helps with calculation speed
-        self.magnitude_y = sp.nsimplify(self.magnitude *sp.sin(sp.rad(rotation_to_x)),tolerance= 1e-7).evalf(50)
+        self.magnitude_x = sp.nsimplify(self.magnitude *sp.cos(sp.rad(rotation_to_x)),tolerance= 1e-7).evalf(90) #the rounding helps with calculation speed
+        self.magnitude_y = sp.nsimplify(self.magnitude *sp.sin(sp.rad(rotation_to_x)),tolerance= 1e-7).evalf(90)
         self.rotation = rotation_to_x  # Winkel in Bezug auf die X-Achse
         self.position_x = position_x   # Position des Angriffspunkts in X-Richtung
         self.position_y = position_y    # Position des Angriffspunkts in Y-Richtung

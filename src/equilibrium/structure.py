@@ -151,6 +151,9 @@ class System:
             values = list(params.values())
 
             for i in range(0,len(symbols)):
+                if values[i] <= 0.001 and values[i] >=-0.001:
+                    values[i] = sp.Symbol('0')
+                
                 display(Eq(symbols[i], values[i].evalf(4)))
                 
         dict_render(sol)
