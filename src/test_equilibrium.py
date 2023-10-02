@@ -1,4 +1,4 @@
-from equilibrium import *
+from gleichgewicht import *
 
 
 def test_calculate_reaction_force():

@@ -5,12 +5,12 @@ dependencies = [
         'matplotlib >= 3.7.2',
 ]
 
-name = "equilibrium"
+name = "gleichgewicht"
 version = "0.0.1"
 authors = [
   { name="Pascal Gitz", email="pascal.gitz@hslu.ch" },
 ]
-description = "The equilibrium Package is designed for students at the Hochschule Luzern Technik and Architektur, with a specific focus on structural engineering. This package provides a comprehensive set of tools for analyzing structures and understanding the principles of equilibrium."
+description = "The gleichgewicht Package is designed for students at the Hochschule Luzern Technik and Architektur, with a specific focus on structural engineering. This package provides a comprehensive set of tools for analyzing structures and understanding the principles of gleichgewicht."
 readme = "README.md"
 requires-python = ">=3.10.12"
 classifiers = [
@@ -20,5 +20,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/PascalGitz/equilibrium"
-"Bug Tracker" = "https://github.com/PascalGitz/equilibrium/issues"
+"Homepage" = "https://github.com/PascalGitz/gleichgewicht"
+"Bug Tracker" = "https://github.com/PascalGitz/gleichgewicht/issues"

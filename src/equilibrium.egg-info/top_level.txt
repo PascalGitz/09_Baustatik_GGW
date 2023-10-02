@@ -1,2 +1,0 @@
-equilibrium
-test_equilibrium
