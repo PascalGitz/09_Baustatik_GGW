@@ -28,9 +28,8 @@ pip install gleichgewicht
 
 2. Import the package into your Jupyter notebook or Python environment.
 
-3. Explore the package's documentation and tutorials to understand its capabilities and usage.
+3. Explore the package's examples
 
-4. Start using the package to analyze different structural systems and deepen your understanding of gleichgewicht principles.
 
 ## Disclaimer
 
