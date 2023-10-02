@@ -21,7 +21,7 @@ This package is intended to be used as a learning aid for students studying stru
 
 To get started with the "Structural Equilibrium Analysis Package," follow these steps:
 
-1. Install the package using the provided installation instructions.
+1. Install the package using the provided installation instructions. Create a new virtual environment to reduce conflicts.
 ```
 pip install gleichgewicht
 ```
